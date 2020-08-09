@@ -18,6 +18,7 @@ public class App {
         }
         printTable(connection);
         updateSalary(connection, 8, 500);
+        changeWorkPosition(connection, "Sales");
 
         connection.close();
 
@@ -55,6 +56,25 @@ public class App {
             preparedStatement.setInt(2, monthWorked);
             int updatedRecords = preparedStatement.executeUpdate();
             System.out.println("Updated " + updatedRecords + " records.");
+
+        } catch (SQLException ex) {
+            System.err.println("Error code: " + ex.getErrorCode());
+            ex.printStackTrace();
+        }
+    }
+
+    private static void changeWorkPosition(Connection connection, String newWorkPosition){
+        //AutoCloseable
+        try (
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE employee SET work_position = ? WHERE id = ?");
+        ) {
+
+            for (int i = 1; i <= 5; i++) {
+                preparedStatement.setString(1, newWorkPosition);
+                preparedStatement.setInt(2, i);
+                preparedStatement.executeUpdate();
+            }
+
 
         } catch (SQLException ex) {
             System.err.println("Error code: " + ex.getErrorCode());
