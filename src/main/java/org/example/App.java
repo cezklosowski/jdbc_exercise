@@ -18,7 +18,7 @@ public class App {
         }
         printTable(connection);
         updateSalary(connection, 8, 500);
-        changeWorkPosition(connection, "Sales");
+        changeWorkPosition(connection, "Support", 1,2,3,4,5);
 
         connection.close();
 
@@ -63,18 +63,16 @@ public class App {
         }
     }
 
-    private static void changeWorkPosition(Connection connection, String newWorkPosition){
+    private static void changeWorkPosition(Connection connection, String newWorkPosition, int... ids){
         //AutoCloseable
         try (
                 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE employee SET work_position = ? WHERE id = ?");
         ) {
-
-            for (int i = 1; i <= 5; i++) {
+            for (int id: ids) {
                 preparedStatement.setString(1, newWorkPosition);
-                preparedStatement.setInt(2, i);
+                preparedStatement.setInt(2, id);
                 preparedStatement.executeUpdate();
             }
-
 
         } catch (SQLException ex) {
             System.err.println("Error code: " + ex.getErrorCode());
