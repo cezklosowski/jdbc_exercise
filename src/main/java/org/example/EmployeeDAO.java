@@ -66,6 +66,11 @@ public class EmployeeDAO implements Cloneable {
 
     }
 
+
+    // TODO: zmienić update; nazwa kolumny nie może być parametryzowana; albo rozbić update na wszystkie kolumny i wywołać odpowiedni, albo updatować wszystkie kolumny
+
+
+
     public void update(Connection connetion, int id) {
         try (
                 PreparedStatement preparedStatement = connetion.prepareStatement("UPDATE employee SET ? = ? WHERE id = ?");
@@ -98,7 +103,7 @@ public class EmployeeDAO implements Cloneable {
                     break;
                 case ("4"):
                     column = "employment_date";
-                    System.out.println("Input correct date of employment (YYYY,MM,DD)");
+                    System.out.println("Input correct date of employment (YYYY-MM-DD)");
                     Date employmentDateUpdated = Date.valueOf(scanner.nextLine());
                     preparedStatement.setString(1, column);
                     preparedStatement.setDate(2, employmentDateUpdated);
