@@ -71,6 +71,17 @@ public class EmployeeDAO implements Cloneable {
     }
 
     public void delete(Connection connetion, int id){
+        try (
+                PreparedStatement preparedStatement = connetion.prepareStatement("DELETE FROM employee WHERE id = ?");
+        ) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            System.out.println("Employee deleted.");
+
+        } catch (SQLException ex) {
+            System.err.println("Error code: " + ex.getErrorCode());
+            ex.printStackTrace();
+        }
 
     }
 }
