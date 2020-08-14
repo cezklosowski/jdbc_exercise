@@ -4,15 +4,15 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class EmployeeDAO implements Cloneable {
+public class EmployeeDAO implements AutoCloseable {
 
     public EmployeeDAO() {
 
     }
 
-    public void create(Connection connetion, Employee employee) {
+    public void create(Connection connection, Employee employee) {
         try (
-                PreparedStatement preparedStatement = connetion.prepareStatement("INSERT INTO employee (id, first_name, last_name, salary, employment_date, work_position) VALUES (?,?,?,?,?,?)");
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO employee (id, first_name, last_name, salary, employment_date, work_position) VALUES (?,?,?,?,?,?)");
         ) {
             preparedStatement.setInt(1, employee.getId());
             preparedStatement.setString(2, employee.getFirstName());
@@ -32,10 +32,10 @@ public class EmployeeDAO implements Cloneable {
 
     }
 
-    public Employee read(Connection connetion, int searchedId) {
+    public Employee read(Connection connection, int searchedId) {
         Employee employee = new Employee();
         try (
-                PreparedStatement preparedStatement = connetion.prepareStatement("SELECT * FROM employee WHERE id = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employee WHERE id = ?");
         ) {
             preparedStatement.setInt(1, searchedId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -129,9 +129,9 @@ public class EmployeeDAO implements Cloneable {
 
     }
 
-    public void delete(Connection connetion, int id) {
+    public void delete(Connection connection, int id) {
         try (
-                PreparedStatement preparedStatement = connetion.prepareStatement("DELETE FROM employee WHERE id = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM employee WHERE id = ?");
         ) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -141,6 +141,11 @@ public class EmployeeDAO implements Cloneable {
             System.err.println("Error code: " + ex.getErrorCode());
             ex.printStackTrace();
         }
+
+    }
+
+    @Override
+    public void close() throws Exception {
 
     }
 }
