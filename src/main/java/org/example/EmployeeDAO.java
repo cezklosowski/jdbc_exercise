@@ -67,60 +67,60 @@ public class EmployeeDAO implements Cloneable {
     }
 
 
-    // TODO: zmienić update; nazwa kolumny nie może być parametryzowana; albo rozbić update na wszystkie kolumny i wywołać odpowiedni, albo updatować wszystkie kolumny
-
-
-
-    public void update(Connection connetion, int id) {
-        try (
-                PreparedStatement preparedStatement = connetion.prepareStatement("UPDATE employee SET ? = ? WHERE id = ?");
-        ) {
+    public void update(Connection connection, int id) {
+        try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Which parameter you want to update (1. First name, 2. Last name, 3. Salary, 4. Date of employment, 5. Work position)");
             String option = scanner.nextLine();
-            String column = "";
+
             switch (option) {
                 case ("1"):
-                    column = "first_name";
+                    PreparedStatement preparedStatement1 = connection.prepareStatement("UPDATE employee SET first_name = ? WHERE id = ?");
                     System.out.println("Input correct first name");
                     String firstNameUpdated = scanner.nextLine();
-                    preparedStatement.setString(1, column);
-                    preparedStatement.setString(2, firstNameUpdated);
+                    preparedStatement1.setString(1, firstNameUpdated);
+                    preparedStatement1.setInt(2, id);
+                    preparedStatement1.executeUpdate();
+                    System.out.println("Employee updated.");
                     break;
                 case ("2"):
-                    column = "last_name";
+                    PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE employee SET last_name = ? WHERE id = ?");
                     System.out.println("Input correct last name");
                     String lastNameUpdated = scanner.nextLine();
-                    preparedStatement.setString(1, column);
-                    preparedStatement.setString(2, lastNameUpdated);
+                    preparedStatement2.setString(1, lastNameUpdated);
+                    preparedStatement2.setInt(2, id);
+                    preparedStatement2.executeUpdate();
+                    System.out.println("Employee updated.");
                     break;
                 case ("3"):
-                    column = "salary";
+                    PreparedStatement preparedStatement3 = connection.prepareStatement("UPDATE employee SET salary = ? WHERE id = ?");
                     System.out.println("Input correct salary");
                     float salaryUpdated = Float.parseFloat(scanner.nextLine());
-                    preparedStatement.setString(1, column);
-                    preparedStatement.setFloat(2, salaryUpdated);
+                    preparedStatement3.setFloat(1, salaryUpdated);
+                    preparedStatement3.setInt(2, id);
+                    preparedStatement3.executeUpdate();
+                    System.out.println("Employee updated.");
                     break;
                 case ("4"):
-                    column = "employment_date";
+                    PreparedStatement preparedStatement4 = connection.prepareStatement("UPDATE employee SET employment_date = ? WHERE id = ?");
                     System.out.println("Input correct date of employment (YYYY-MM-DD)");
                     Date employmentDateUpdated = Date.valueOf(scanner.nextLine());
-                    preparedStatement.setString(1, column);
-                    preparedStatement.setDate(2, employmentDateUpdated);
+                    preparedStatement4.setDate(1, employmentDateUpdated);
+                    preparedStatement4.setInt(2, id);
+                    preparedStatement4.executeUpdate();
+                    System.out.println("Employee updated.");
                     break;
                 case ("5"):
-                    column = "work_position";
+                    PreparedStatement preparedStatement5 = connection.prepareStatement("UPDATE employee SET work_position = ? WHERE id = ?");
                     System.out.println("Input correct work position");
                     String workPositionUpdated = scanner.nextLine();
-                    preparedStatement.setString(1, column);
-                    preparedStatement.setString(2, workPositionUpdated);
+                    preparedStatement5.setString(1, workPositionUpdated);
+                    preparedStatement5.setInt(2, id);
+                    preparedStatement5.executeUpdate();
+                    System.out.println("Employee updated.");
                     break;
             }
 
-
-            preparedStatement.setInt(3, id);
-            preparedStatement.executeUpdate();
-            System.out.println("Employee updated.");
 
         } catch (SQLException ex) {
             System.err.println("Error code: " + ex.getErrorCode());
